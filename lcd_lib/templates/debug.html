@@ -1,0 +1,55 @@
+<html>
+    <head>
+        <style>
+            input { font-family: monospace }
+        </style>
+
+        <script src="jquery.js"></script>
+        <script>
+function postData(data) {
+    $.ajax('lcd', {
+        data : JSON.stringify(data),
+        contentType : 'application/json',
+        type : 'POST',
+        success : function(data, textStatus, xhr) {
+            if (data['ok']) {
+                alert('Success!');
+            } else {
+                alert('Fail!');
+            }
+        }
+    });
+}
+function setText() {
+    postData({
+        'line_1': $('#line_1').val(),
+        'line_2': $('#line_2').val()
+    })
+}
+function turnOff() {
+    postData({'display': 'off'});
+}
+function turnOn() {
+    postData({'display': 'on'});
+}
+        </script>
+    </head>
+
+    <body>
+        <ul style="list-style: none">
+            <li>
+                <label>Line 1
+                    <input type="text" size="16" maxlength="16" id="line_1"/>
+                </label>
+            </li>
+            <li>
+                <label>Line 2
+                    <input type="text" size="16" maxlength="16" id="line_2"/>
+                </label>
+            </li>
+            <li>
+                <button onclick="setText()">Set Text</button>
+            </li>
+        </ul>
+    </body>
+</html>
