@@ -4,6 +4,7 @@ import flask
 import json
 import os
 import os.path
+import traceback
 
 if os.getenv('NO_HARDWARE', '') == '1':
     import lcd_lib.fake_controller as controller
@@ -22,31 +23,34 @@ app = Server(__name__)
 
 @app.route('/lcd', methods=['POST'])
 def lcd():
-    request = flask.request
-
-    raw_data = request.data
-    data = json.loads(raw_data)
-
-    backlight_already_on = False
-
-    if 'line_1' in data:
-        app.controller.set_line_1(data['line_1'])
-        backlight_already_on = True
-
-    if 'line_2' in data:
-        app.controller.set_line_2(data['line_2'])
-        backlight_already_on = True
-
-    if 'backlight' in data:
-        if data['backlight'] == 'on':
-            if not backlight_already_on:
-                app.controller.turn_backlight_on()
-        elif data['backlight'] == 'off':
-            app.controller.turn_backlight_off()
-
-    response = flask.make_response(json.dumps({'ok': True}))
-    response.headers["Content-type"] = "text/json"
-    return response
+    try:
+        request = flask.request
+    
+        raw_data = request.data
+        data = json.loads(raw_data)
+    
+        backlight_already_on = False
+    
+        if 'line_1' in data:
+            app.controller.set_line_1(data['line_1'])
+            backlight_already_on = True
+    
+        if 'line_2' in data:
+            app.controller.set_line_2(data['line_2'])
+            backlight_already_on = True
+    
+        if 'backlight' in data:
+            if data['backlight'] == 'on':
+                if not backlight_already_on:
+                    app.controller.turn_backlight_on()
+            elif data['backlight'] == 'off':
+                app.controller.turn_backlight_off()
+    
+        response = flask.make_response(json.dumps({'ok': True}))
+        response.headers["Content-type"] = "text/json"
+        return response
+    except:
+        traceback.print_exc()
 
 
 @app.route('/debug', methods=['GET'])
