@@ -14,8 +14,8 @@ class Controller(object):
     def set_line_2(self, text):
         self.set_line(2, text)
 
-    def turn_display_off(self):
-        print 'display_off'
+    def turn_backlight_off(self):
+        print 'backlight_off'
 
-    def turn_display_on(self):
-        print 'display_on'
+    def turn_backlight_on(self):
+        print 'backlight_on'

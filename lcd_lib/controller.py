@@ -18,8 +18,8 @@ class Controller(object):
     def set_line_2(self, text):
         self.set_line(2, text)
 
-    def turn_display_off(self):
-        self.lcd.display_off()
+    def turn_backlight_off(self):
+        self.lcd.backlight_off()
 
-    def turn_display_on(self):
-        self.lcd_display_on()
+    def turn_backlight_on(self):
+        self.lcd_backlight_on()

@@ -70,11 +70,13 @@ class lcd:
     self.write(LCD_ENTRYMODESET | LCD_ENTRYLEFT)
     sleep(0.2)
 
-  def strobe(self, data):
+  def strobe(self, data, backlight_off=False):
     """clocks EN to latch command"""
-    self.device.write_cmd(data | En | LCD_BACKLIGHT)
+    backlight = LCD_NOBACKLIGHT if backlight_off else LCD_BACKLIGHT
+
+    self.device.write_cmd(data | En | backlight)
     sleep(0.0005)
-    self.device.write_cmd(((data & ~En) | LCD_BACKLIGHT))
+    self.device.write_cmd(((data & ~En) | backlight))
     sleep(0.001)
 
   def write_four_bits(self, data):
@@ -103,7 +105,11 @@ class lcd:
 
   def backlight_off(self):
     """turn off backlight, anything that calls write turns it on again"""
-    self.device.write_cmd(LCD_NOBACKLIGHT)
+    self.strobe(0, backlight_off=True)
+
+  def backlight_on(self):
+    """turn on backlight"""
+    self.strobe(0, backlight_off=False)
 
   def display_off(self):
     """turn off the text display"""

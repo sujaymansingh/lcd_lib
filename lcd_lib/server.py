@@ -27,22 +27,22 @@ def lcd():
     raw_data = request.data
     data = json.loads(raw_data)
 
-    display_already_on = False
+    backlight_already_on = False
 
     if 'line_1' in data:
         app.controller.set_line_1(data['line_1'])
-        display_already_on = True
+        backlight_already_on = True
 
     if 'line_2' in data:
         app.controller.set_line_2(data['line_2'])
-        display_already_on = True
+        backlight_already_on = True
 
-    if 'display' in data:
-        if data['display'] == 'on':
-            if not display_already_on:
-                app.controller.turn_display_on()
-        elif data['display'] == 'off':
-            app.controller.turn_display_off()
+    if 'backlight' in data:
+        if data['backlight'] == 'on':
+            if not backlight_already_on:
+                app.controller.turn_backlight_on()
+        elif data['backlight'] == 'off':
+            app.controller.turn_backlight_off()
 
     response = flask.make_response(json.dumps({'ok': True}))
     response.headers["Content-type"] = "text/json"
