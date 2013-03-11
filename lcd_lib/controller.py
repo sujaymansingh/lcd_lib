@@ -22,4 +22,4 @@ class Controller(object):
         self.lcd.backlight_off()
 
     def turn_backlight_on(self):
-        self.lcd_backlight_on()
+        self.lcd.backlight_on()
