@@ -21,7 +21,7 @@ class Server(flask.Flask):
 
 app = Server(__name__)
 
-@app.route('/lcd', methods=['POST'])
+@app.route('/api/v1/lcd', methods=['POST'])
 def lcd():
     try:
         request = flask.request
@@ -53,12 +53,12 @@ def lcd():
         traceback.print_exc()
 
 
-@app.route('/debug', methods=['GET'])
+@app.route('/api/v1/debug', methods=['GET'])
 def debug():
     return flask.render_template('debug.html')
 
 
-@app.route('/jquery.js', methods=['GET'])
+@app.route('/api/v1/jquery.js', methods=['GET'])
 def jquery_js():
     filepath = os.path.join(os.path.dirname(__file__), 'templates', 'jquery.js')
     with open(filepath, 'r') as input_file:
