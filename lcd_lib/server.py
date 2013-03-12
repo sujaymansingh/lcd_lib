@@ -6,10 +6,7 @@ import os
 import os.path
 import traceback
 
-if os.getenv('NO_HARDWARE', '') == '1':
-    import lcd_lib.fake_controller as controller
-else:
-    from lcd_lib import controller
+import controller
 
 
 class Server(flask.Flask):
@@ -17,6 +14,14 @@ class Server(flask.Flask):
     def __init__(self, name):
         super(Server, self).__init__(name)
         self.controller = controller.Controller()
+
+    def __enter__(self):
+        print self.controller
+        self.controller.start()
+        return self
+
+    def __exit__(self, type_, value, traceback):
+        self.controller.stop()
 
 
 app = Server(__name__)
@@ -68,4 +73,5 @@ def jquery_js():
 
 
 if __name__ == '__main__':
-    app.run(host= '0.0.0.0')
+    with app as server:
+        server.run(host='0.0.0.0')

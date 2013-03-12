@@ -1,4 +1,6 @@
-class Controller(object):
+import controller
+
+class Controller(controller.Controller):
 
     def __init__(self):
         self.line_length = 16
